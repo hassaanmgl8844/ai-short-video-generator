@@ -1,11 +1,15 @@
-import React from 'react'
+import React from "react";
+import Header from "./_component/Header";
 
-function DashboardLayout({children}) {
+function DashboardLayout({ children }) {
   return (
     <div>
-      {children}
+      <div>
+        <Header />
+        {children}
+      </div>
     </div>
-  )
+  );
 }
 
-export default DashboardLayout
+export default DashboardLayout;
