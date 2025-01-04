@@ -19,7 +19,7 @@ const CreateNew = () => {
         {/* Select Topic Component */}
         <SelectTopic onUserSelect={onHandleInputChange} />
         {/* Select Style Component  */}
-        <SelectStyle />
+        <SelectStyle onUserSelect={onHandleInputChange} />
         {/* Duration Component  */}
 
         {/* Create Button  */}
