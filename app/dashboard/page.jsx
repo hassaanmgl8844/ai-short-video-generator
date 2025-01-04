@@ -2,6 +2,7 @@
 import { Button } from '@/components/ui/button'
 import React, { useState } from 'react'
 import EmptyState from './_component/EmptyState';
+import Link from 'next/link';
 
 const Dashboard = () => {
   const [videoList,setVideoList] = useState([]);
