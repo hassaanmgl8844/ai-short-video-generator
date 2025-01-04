@@ -8,6 +8,11 @@ const CreateNew = () => {
   const [formData, setFormData] = useState([]);
   const onHandleInputChange = (fieldName, fieldValue) => {
     console.log(fieldName, fieldValue);
+
+    setFormData(prev=>({
+      ...prev,
+      [fieldName]: fieldValue,
+    }))
   };
 
   return (
@@ -22,7 +27,7 @@ const CreateNew = () => {
         {/* Select Style Component  */}
         <SelectStyle onUserSelect={onHandleInputChange} />
         {/* Duration Component  */}
-        <SelectDuration />
+        <SelectDuration onUserSelect={onHandleInputChange} />
         {/* Create Button  */}
       </div>
     </div>
