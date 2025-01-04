@@ -6,6 +6,7 @@ const CreateNew = () => {
 
   const [formData,setFormData]= useState([]);
   const onHandleInputChange=(fieldName,fieldValue)=>{
+    console.log(fieldName,fieldValue);
     
   }
 
@@ -15,7 +16,7 @@ const CreateNew = () => {
 
       <div className='mt-10 shadow-md p-10'>
         {/* Select Topic Component */}
-      <SelectTopic />
+      <SelectTopic onUserSelect={onHandleInputChange} />
 
         {/* Select Style Component  */}
 
