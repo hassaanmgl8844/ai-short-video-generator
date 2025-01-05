@@ -4,22 +4,25 @@ import SelectTopic from "./_components/SelectTopic";
 import SelectStyle from "./_components/SelectStyle";
 import SelectDuration from "./_components/SelectDuration";
 import { Button } from "@/components/ui/button";
+import axios from "axios";
 
 const CreateNew = () => {
   const [formData, setFormData] = useState([]);
   const onHandleInputChange = (fieldName, fieldValue) => {
     console.log(fieldName, fieldValue);
 
-    setFormData(prev=>({
+    setFormData((prev) => ({
       ...prev,
       [fieldName]: fieldValue,
-    }))
+    }));
   };
 
   // Get Video Script
-  const  GetVideoScript=()=>{
-    
-  }
+  // const  GetVideoScript=()=>{
+  //   const result = await axios.post('/api/get-video-script', {
+  //     prompt: JSON.stringify(formData),
+  //   })
+  //     }
 
   return (
     <div className="md:px-20">
