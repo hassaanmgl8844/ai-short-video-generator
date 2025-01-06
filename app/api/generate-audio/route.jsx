@@ -1,5 +1,7 @@
 import textToSpeechClient from "@google-cloud/text-to-speech";
 import { NextResponse } from "next/server";
+import fs from 'fs';
+import util from 'util';
 
 const client = new textToSpeechClient.TextToSpeechClient({
   apiKey: process.env.GOOGLE_API_KEY,

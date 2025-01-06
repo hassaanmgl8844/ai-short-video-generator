@@ -6,7 +6,9 @@ import SelectDuration from "./_components/SelectDuration";
 import { Button } from "@/components/ui/button";
 import axios from "axios";
 import CustomLoading from "./_components/CustomLoading";
+import { v4 as uuidv4 } from 'uuid';
 
+const scriptData='A person sits on their bed, scrolling through their phone in a dimly lit room. The phone buzzes, and they see a notification: "Message from yourself." Confused, they open it to find a photo of themselves sitting on the bed, exactly as they are now. Nervously, they glance around the room but see nothing unusual. The phone buzzes again with a new message: "Look behind you." Their breathing quickens as they slowly turn to look behind them, finding only an empty hallway. Turning back to their phone, trembling, they mutter, "This isn&apos;t funny..." Another buzz comes through: "You have 10 seconds." Panic sets in as they drop the phone, which now displays a countdown: 10... 9... 8... Frozen in fear, they watch the numbers tick down until it reaches 1. The screen goes black, and the room is plunged into silence. A faint whisper echoes: "Time&apos;s up." The screen cuts to black.'
 const CreateNew = () => {
   const [formData, setFormData] = useState([]);
  const [loading,setLoading]=useState(false);
@@ -21,7 +23,8 @@ const CreateNew = () => {
   };
 
   const onCreateClickHandler = () => {
-    GetVideoScript();
+    // GetVideoScript();
+    GenerateAudioFile(scriptData);
   };
 
   // Get Video Script
@@ -50,13 +53,20 @@ const CreateNew = () => {
   };
 
   const GenerateAudioFile=async(videoScriptData)=>{
+    setLoading(true);
     let script='';
-    videoScriptData.forEach(item=>{
-      script=script+item.ContentText+' ';
-    })
+    const id=uuidv4();
+    // videoScriptData.forEach(item=>{
+    //   script=script+item.ContentText+' ';
+    // })
 
-    console.log(script);
-    
+    await axios.post('/api/generate-audio',{
+      text:videoScriptData,
+      id:id,
+    }).then(resp=>{
+      console.log(resp.data);
+    });
+    setLoading(false);
   }
 
   return (
