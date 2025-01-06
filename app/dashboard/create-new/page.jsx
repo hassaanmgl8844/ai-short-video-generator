@@ -5,10 +5,12 @@ import SelectStyle from "./_components/SelectStyle";
 import SelectDuration from "./_components/SelectDuration";
 import { Button } from "@/components/ui/button";
 import axios from "axios";
+import CustomLoading from "./_components/CustomLoading";
 
 const CreateNew = () => {
   const [formData, setFormData] = useState([]);
-
+ const [loading,setLoading]=useState(false);
+ const [videoScript,setVideoScript] = useState();
   const onHandleInputChange = (fieldName, fieldValue) => {
     console.log(fieldName, fieldValue);
 
@@ -24,6 +26,7 @@ const CreateNew = () => {
 
   // Get Video Script
   const GetVideoScript = async () => {
+    setLoading(true);
     const prompt =
       "Wriate a script to generate " +
       formData.duration +
@@ -39,8 +42,10 @@ const CreateNew = () => {
         prompt: prompt,
       })
       .then((resp) => {
-        console.log(resp.data);
+        console.log(resp.data.result);
+        setVideoScript(resp.data.result);
       });
+      setLoading(false);
   };
 
   return (
@@ -61,6 +66,7 @@ const CreateNew = () => {
           Create Short Video
         </Button>
       </div>
+      <CustomLoading loading={loading} />
     </div>
   );
 };
