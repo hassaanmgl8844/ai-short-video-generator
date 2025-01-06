@@ -42,11 +42,22 @@ const CreateNew = () => {
         prompt: prompt,
       })
       .then((resp) => {
-        console.log(resp.data.result);
+        // console.log(resp.data.result);
         setVideoScript(resp.data.result);
+        GenerateAudioFile();
       });
       setLoading(false);
   };
+
+  const GenerateAudioFile=async(videoScriptData)=>{
+    let script='';
+    videoScriptData.forEach(item=>{
+      script=script+item.ContentText+' ';
+    })
+
+    console.log(script);
+    
+  }
 
   return (
     <div className="md:px-20">
