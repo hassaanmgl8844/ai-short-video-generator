@@ -9,7 +9,7 @@ import {
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 
-const SelectDuration = ({onUserSelect}) => {
+const SelectDuration = ({ onUserSelect }) => {
   return (
     <div className="mt-7">
       <h2 className="font-bold text-2xl text-primary">Duration</h2>
