@@ -10,11 +10,13 @@ import { v4 as uuidv4 } from "uuid";
 
 const scriptData =
   'A person sits on their bed, scrolling through their phone in a dimly lit room. The phone buzzes, and they see a notification: "Message from yourself." Confused, they open it to find a photo of themselves sitting on the bed, exactly as they are now. Nervously, they glance around the room but see nothing unusual. The phone buzzes again with a new message: "Look behind you." Their breathing quickens as they slowly turn to look behind them, finding only an empty hallway. Turning back to their phone, trembling, they mutter, "This isn&apos;t funny..." Another buzz comes through: "You have 10 seconds." Panic sets in as they drop the phone, which now displays a countdown: 10... 9... 8... Frozen in fear, they watch the numbers tick down until it reaches 1. The screen goes black, and the room is plunged into silence. A faint whisper echoes: "Time&apos;s up." The screen cuts to black.';
+  const FILEURL='https://firebasestorage.googleapis.com/v0/b/tubeguruji/ps.appspot.com/o/ai-short-video-files%2F1e23f618-f8d2-4762-a0a8-ef/21529.mp3?alt=media&token=2756b6f9-c0f2-4385-9cdb-d0f1e3cf89af'
 const CreateNew = () => {
   const [formData, setFormData] = useState([]);
   const [loading, setLoading] = useState(false);
   const [videoScript, setVideoScript] = useState();
   const [audioFile, setAudioFile] = useState();
+  const [captions, setCaptions] = useState();
   const onHandleInputChange = (fieldName, fieldValue) => {
     console.log(fieldName, fieldValue);
 
@@ -26,7 +28,8 @@ const CreateNew = () => {
 
   const onCreateClickHandler = () => {
     // GetVideoScript();
-    GenerateAudioFile(scriptData);
+    // GenerateAudioFile(scriptData);
+    GenerateAudioCaption(FILEURL);
   };
 
   // Get Video Script
@@ -71,6 +74,21 @@ const CreateNew = () => {
         setAudioFile(resp.data.result);
       });
     setLoading(false);
+  };
+
+  const GenerateAudioCaption = async () => {
+    setLoading(true);
+
+    await axios
+      .post("/api/generate-captions", {
+        audioFileUrl: fileUrl,
+      })
+      .then((resp) => {
+        console.log(resp.data.result);
+        setCaptions(resp?.data?.result);
+      });
+
+      setLoading(false);
   };
 
   return (
