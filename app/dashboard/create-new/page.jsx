@@ -26,66 +26,6 @@ const videoSCRIPT = [
     ContentText:
       "A face etched with principle, unyielding in the face of corruption.",
   },
-  {
-    imagePrompt:
-      "Chaotic civil war battlefield: Legionaries clashing, blood and dust, Cato observing with grim determination.",
-    ContentText:
-      "Brother against brother, the Republic tearing itself apart, Cato watches with a heavy heart.",
-  },
-  {
-    imagePrompt:
-      "Burning ruins of Utica, smoke billowing, Cato standing amidst the destruction, resolute.",
-    ContentText:
-      "The ashes of a fallen Republic, a final stand against the tide of tyranny.",
-  },
-  {
-    imagePrompt:
-      "Poignant image of Cato's suicide: a lone figure with a sword, about to fall on it, stark light, dramatic shadows.",
-    ContentText:
-      "Death before dishonor, a final act of defiance against a world he could no longer bear.",
-  },
-  {
-    imagePrompt:
-      "Tense negotiation in the Senate: close-ups of faces, sweat, anger, accusations flying.",
-    ContentText:
-      "The viper's nest of Roman politics, where alliances are forged and broken in the blink of an eye.",
-  },
-  {
-    imagePrompt:
-      "Shadowy meeting: conspirators whispering, dimly lit room, secrets being exchanged.",
-    ContentText:
-      "In the darkness, plans are hatched to undermine the very foundations of the Republic.",
-  },
-  {
-    imagePrompt:
-      "Cato's aging face in Utica: close-up, lines of weariness and determination, a mix of sadness and resolve in his eyes.",
-    ContentText:
-      "The weight of the world on his shoulders, a solitary figure facing the inevitable.",
-  },
-  {
-    imagePrompt:
-      "Sun-drenched North African landscape: vast and beautiful, contrasted with the turmoil in Cato's mind.",
-    ContentText:
-      "Even in the beauty of nature, Cato cannot escape the looming shadow of Rome's demise.",
-  },
-  {
-    imagePrompt:
-      "Stylized battle scene: opposing legions clashing, dramatic lighting, focus on dynamic movement and action.",
-    ContentText:
-      "The clash of armies, the death knell of the Republic's ideals.",
-  },
-  {
-    imagePrompt:
-      "Intense close-up of Cato and Caesar arguing: faces contorted with anger, sparks of animosity flying.",
-    ContentText:
-      "A clash of titans, two men locked in a struggle for the soul of Rome.",
-  },
-  {
-    imagePrompt:
-      "Dramatic slow-motion: Cato delivering a powerful speech to the Senate, audience captivated, lighting emphasizing his importance.",
-    ContentText:
-      "A voice of reason, drowned out by the clamor of ambition and greed.",
-  },
 ];
 
 const CreateNew = () => {
@@ -105,9 +45,10 @@ const CreateNew = () => {
   };
 
   const onCreateClickHandler = () => {
-    GetVideoScript();
+    // GetVideoScript();
     // GenerateAudioFile(scriptData);
     // GenerateAudioCaption(FILEURL);
+    GenerateImage();
   };
 
   // Get Video Script
@@ -170,9 +111,10 @@ const CreateNew = () => {
     console.log(videoScript, captions, audioFileUrl);
   };
 
+  // Used to Generate AI Images
   const GenerateImage = () => {
     let images = [];
-    videoScript.forEach(async (element) => {
+    videoSCRIPT.forEach(async (element) => {
       await axios
         .post("api/generate-image", {
           prompt: element?.imagePrompt,
