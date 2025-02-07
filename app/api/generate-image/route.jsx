@@ -27,7 +27,7 @@ export async function POST(req) {
 
     // Save to Firebase
     const base64Image =
-      "data:image/png;base64" + (await ConvertImage(output[0]));
+      "data:image/png;base64," + (await ConvertImage(output[0]));
     const fileName = "ai-short-video=files/" + Date.now() + ".png";
     const storageRef = ref(storage, fileName);
 
