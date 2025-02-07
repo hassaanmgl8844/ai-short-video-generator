@@ -45,10 +45,10 @@ const CreateNew = () => {
   };
 
   const onCreateClickHandler = () => {
-    // GetVideoScript();
+    GetVideoScript();
     // GenerateAudioFile(scriptData);
     // GenerateAudioCaption(FILEURL);
-    GenerateImage();
+    // GenerateImage();
   };
 
   // Get Video Script
@@ -75,6 +75,7 @@ const CreateNew = () => {
       });
   };
 
+  // Get Audio File and Save to Firebase Storage
   const GenerateAudioFile = async (videoScriptData) => {
     setLoading(true);
     let script = "";
@@ -83,48 +84,30 @@ const CreateNew = () => {
       script = script + item.ContentText + " ";
     });
 
-    await axios
-      .post("/api/generate-audio", {
-        text: script,
-        id: id,
-      })
-      .then((resp) => {
-        setAudioFileUrl(resp.data.result);
-        resp.data.result && GenerateAudioCaption(resp.data.result);
-      });
-    setLoading(false);
+    const resp = await axios.post("/api/generate-audio", {
+      text: script,
+      id: id,
+    });
+    setAudioFileUrl(resp.data.result);
+    resp.data.result && GenerateAudioCaption(resp.data.result, videoScriptData);
   };
 
-  const GenerateAudioCaption = async (fileUrl) => {
+  // Used to Generate Caption From AUDIO File
+  const GenerateAudioCaption = async (fileUrl, videoScriptData) => {
     setLoading(true);
     console.log(fileUrl);
 
-    await axios
-      .post("/api/generate-captions", {
-        audioFileUrl: fileUrl,
-      })
-      .then((resp) => {
-        console.log(resp.data.result);
-        setCaptions(resp?.data?.result);
-        GenerateImage();
-      });
-    console.log(videoScript, captions, audioFileUrl);
+    const resp = await axios.post("/api/generate-captions", {
+      audioFileUrl: fileUrl,
+    });
+    setCaptions(resp?.data?.result);
+    console.log(resp.data.result);
+    resp.data.result && (await GenerateImage(videoScriptData));
   };
 
   // Used to Generate AI Images
-  const GenerateImage = () => {
+  const GenerateImage = async (videoScriptData) => {
     let images = [];
-    videoSCRIPT.forEach(async (element) => {
-      await axios
-        .post("api/generate-image", {
-          prompt: element?.imagePrompt,
-        })
-        .then((resp) => {
-          console.log(resp.data.result);
-          images.push(resp.data.result);
-        });
-    });
-    console.log(images);
     setImageList(images);
     setLoading(false);
   };

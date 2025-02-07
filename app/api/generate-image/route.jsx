@@ -37,7 +37,9 @@ export async function POST(req) {
     console.log(downloadURL);
 
     return NextResponse.json({ result: downloadURL });
-  } catch (e) {}
+  } catch (e) {
+    return NextResponse.json({ 'error': e });
+  }
 }
 
 const ConvertImage = async (imageUrl) => {
