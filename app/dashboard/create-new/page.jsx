@@ -108,6 +108,18 @@ const CreateNew = () => {
   // Used to Generate AI Images
   const GenerateImage = async (videoScriptData) => {
     let images = [];
+
+    for (const element of videoScriptData) {
+      try {
+        const resp = await axios.post("/api/generate-image", {
+          prompt: element.imagePrompt,
+        });
+        console.log(resp.data.result);
+        images.push(resp.data.result);
+      } catch (e) {
+        console.log("Error:" + e);
+      }
+    }
     setImageList(images);
     setLoading(false);
   };
