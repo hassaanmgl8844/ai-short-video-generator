@@ -8,6 +8,7 @@ import axios from "axios";
 import CustomLoading from "./_components/CustomLoading";
 import { v4 as uuidv4 } from "uuid";
 import { VideoDataContext } from "@/app/_context/VideoDataContext";
+import { useUser } from "@clerk/nextjs";
 
 const CreateNew = () => {
   const [formData, setFormData] = useState([]);
@@ -17,6 +18,7 @@ const CreateNew = () => {
   const [captions, setCaptions] = useState();
   const [imageList, setImageList] = useState();
   const { videoData, setVideoData } = useContext(VideoDataContext);
+  const { user } = useUser();
   const onHandleInputChange = (fieldName, fieldValue) => {
     console.log(fieldName, fieldValue);
 
@@ -113,22 +115,36 @@ const CreateNew = () => {
     }
     setVideoData((prev) => ({
       ...prev,
-      'imageList': images,
+      imageList: images,
     }));
     setImageList(images);
     setLoading(false);
   };
 
   useEffect(() => {
-  console.log(videoData);
-  if(Object.keys(videoData).length==4){
-    SaveVideoData(videoData);
-  }
-  }, [videoData])
+    console.log(videoData);
+    if (Object.keys(videoData).length == 4) {
+      SaveVideoData(videoData);
+    }
+  }, [videoData]);
 
-  const SaveVideoData=()=>{
-    
-  }
+  const SaveVideoData = async (videoData) => {
+    setLoading(true);
+
+    const result = await db
+      .insert(videoData)
+      .values({
+        script: videoData?.videoScript,
+        audioFileUrl: videoData?.audioFileUrl,
+        captions: videoData?.captions,
+        imageList: videoData?.imageList,
+        createdBy: user?.primaryEmailAddress?.emailAddress,
+      })
+      .returning({ id: videoData?.id });
+
+    console.log(result);
+    setLoading(false);
+  };
 
   return (
     <div className="md:px-20">
