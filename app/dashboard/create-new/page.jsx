@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import SelectTopic from "./_components/SelectTopic";
 import SelectStyle from "./_components/SelectStyle";
 import SelectDuration from "./_components/SelectDuration";
@@ -7,26 +7,9 @@ import { Button } from "@/components/ui/button";
 import axios from "axios";
 import CustomLoading from "./_components/CustomLoading";
 import { v4 as uuidv4 } from "uuid";
+import { VideoDataContext } from "@/app/_context/VideoDataContext";
 
-const scriptData =
-  'A person sits on their bed, scrolling through their phone in a dimly lit room. The phone buzzes, and they see a notification: "Message from yourself." Confused, they open it to find a photo of themselves sitting on the bed, exactly as they are now. Nervously, they glance around the room but see nothing unusual. The phone buzzes again with a new message: "Look behind you." Their breathing quickens as they slowly turn to look behind them, finding only an empty hallway. Turning back to their phone, trembling, they mutter, "This isn&apos;t funny..." Another buzz comes through: "You have 10 seconds." Panic sets in as they drop the phone, which now displays a countdown: 10... 9... 8... Frozen in fear, they watch the numbers tick down until it reaches 1. The screen goes black, and the room is plunged into silence. A faint whisper echoes: "Time&apos;s up." The screen cuts to black.';
-const FILEURL =
-  "https://firebasestorage.googleapis.com/v0/b/tubeguruji/ps.appspot.com/o/ai-short-video-files%2F1e23f618-f8d2-4762-a0a8-ef/21529.mp3?alt=media&token=2756b6f9-c0f2-4385-9cdb-d0f1e3cf89af";
 
-const videoSCRIPT = [
-  {
-    imagePrompt:
-      "Sweeping aerial shot of the Roman Forum, bustling with activity, signs of wealth and power.",
-    ContentText:
-      "The heart of Rome, teeming with life and ambition, yet rotting from within.",
-  },
-  {
-    imagePrompt:
-      "Close-up of Cato's stoic face, weathered and determined, Roman senator robes.",
-    ContentText:
-      "A face etched with principle, unyielding in the face of corruption.",
-  },
-];
 
 const CreateNew = () => {
   const [formData, setFormData] = useState([]);
@@ -35,6 +18,7 @@ const CreateNew = () => {
   const [audioFileUrl, setAudioFileUrl] = useState();
   const [captions, setCaptions] = useState();
   const [imageList, setImageList] = useState();
+  const {videoData,setVideoData}= useContext(VideoDataContext);
   const onHandleInputChange = (fieldName, fieldValue) => {
     console.log(fieldName, fieldValue);
 
@@ -64,15 +48,14 @@ const CreateNew = () => {
       " format  for each scene and give me result in JSON format with imagePrompt and ContentText as field, No Plain Text";
     console.log(prompt);
 
-    const result = await axios
+    const resp = await axios
       .post("/api/get-video-script", {
         prompt: prompt,
       })
-      .then((resp) => {
-        console.log("EXE");
+      if(resp.data.result){
         setVideoScript(resp.data.result);
-        resp.data.result && GenerateAudioFile(resp.data.result);
-      });
+        await GenerateAudioFile(resp.data.result);
+      }
   };
 
   // Get Audio File and Save to Firebase Storage
