@@ -1,5 +1,5 @@
 "use client";
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import SelectTopic from "./_components/SelectTopic";
 import SelectStyle from "./_components/SelectStyle";
 import SelectDuration from "./_components/SelectDuration";
@@ -9,8 +9,6 @@ import CustomLoading from "./_components/CustomLoading";
 import { v4 as uuidv4 } from "uuid";
 import { VideoDataContext } from "@/app/_context/VideoDataContext";
 
-
-
 const CreateNew = () => {
   const [formData, setFormData] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -18,7 +16,7 @@ const CreateNew = () => {
   const [audioFileUrl, setAudioFileUrl] = useState();
   const [captions, setCaptions] = useState();
   const [imageList, setImageList] = useState();
-  const {videoData,setVideoData}= useContext(VideoDataContext);
+  const { videoData, setVideoData } = useContext(VideoDataContext);
   const onHandleInputChange = (fieldName, fieldValue) => {
     console.log(fieldName, fieldValue);
 
@@ -48,14 +46,17 @@ const CreateNew = () => {
       " format  for each scene and give me result in JSON format with imagePrompt and ContentText as field, No Plain Text";
     console.log(prompt);
 
-    const resp = await axios
-      .post("/api/get-video-script", {
-        prompt: prompt,
-      })
-      if(resp.data.result){
-        setVideoScript(resp.data.result);
-        await GenerateAudioFile(resp.data.result);
-      }
+    const resp = await axios.post("/api/get-video-script", {
+      prompt: prompt,
+    });
+    if (resp.data.result) {
+      setVideoData((prev) => ({
+        ...prev,
+        videoScript: resp.data.result,
+      }));
+      setVideoScript(resp.data.result);
+      await GenerateAudioFile(resp.data.result);
+    }
   };
 
   // Get Audio File and Save to Firebase Storage
@@ -71,6 +72,10 @@ const CreateNew = () => {
       text: script,
       id: id,
     });
+    setVideoData((prev) => ({
+      ...prev,
+      audioFileUrl: resp.data.result,
+    }));
     setAudioFileUrl(resp.data.result);
     resp.data.result && GenerateAudioCaption(resp.data.result, videoScriptData);
   };
@@ -84,7 +89,10 @@ const CreateNew = () => {
       audioFileUrl: fileUrl,
     });
     setCaptions(resp?.data?.result);
-    console.log(resp.data.result);
+    setVideoData((prev) => ({
+      ...prev,
+      captions: resp.data.result,
+    }));
     resp.data.result && (await GenerateImage(videoScriptData));
   };
 
@@ -103,9 +111,18 @@ const CreateNew = () => {
         console.log("Error:" + e);
       }
     }
+    setVideoData((prev) => ({
+      ...prev,
+      'imageList': images,
+    }));
     setImageList(images);
     setLoading(false);
   };
+
+  useEffect(() => {
+  console.log(videoData);
+  
+  }, [videoData])
 
   return (
     <div className="md:px-20">
