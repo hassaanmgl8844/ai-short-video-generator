@@ -1,5 +1,4 @@
-import { useEffect, useState } from 'react';
-import React, { useState } from "react";
+import React, { useState , useEffect } from "react";
 import {
   Dialog,
   DialogContent,
@@ -19,8 +18,8 @@ const PlayerDialog = ({playVideo,videoId}) => {
   }, [playVideo])
 
   return (
-    <Dialog>
-      <DialogContent>
+    <Dialog open={openDialog}>
+      <DialogContent className="bg-white">
         <DialogHeader>
           <DialogTitle className="text-3xl font-bold my-5">Your Video Is Ready!</DialogTitle>
           <DialogDescription>

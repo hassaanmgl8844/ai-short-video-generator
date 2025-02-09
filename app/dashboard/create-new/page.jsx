@@ -9,6 +9,7 @@ import CustomLoading from "./_components/CustomLoading";
 import { v4 as uuidv4 } from "uuid";
 import { VideoDataContext } from "@/app/_context/VideoDataContext";
 import { useUser } from "@clerk/nextjs";
+import PlayerDialog from "../_component/PlayerDialog";
 
 const CreateNew = () => {
   const [formData, setFormData] = useState([]);
@@ -17,6 +18,10 @@ const CreateNew = () => {
   const [audioFileUrl, setAudioFileUrl] = useState();
   const [captions, setCaptions] = useState();
   const [imageList, setImageList] = useState();
+  // const [playVideo, setPlayVideo] = useState(false);
+  const [playVideo, setPlayVideo] = useState(true);
+  // const [videoId, setVideoId] = useState();
+  const [videoId, setVideoId] = useState(1);
   const { videoData, setVideoData } = useContext(VideoDataContext);
   const { user } = useUser();
   const onHandleInputChange = (fieldName, fieldValue) => {
@@ -142,6 +147,8 @@ const CreateNew = () => {
       })
       .returning({ id: videoData?.id });
 
+      setVideoId(result[0].id);
+      setPlayVideo(true);
     console.log(result);
     setLoading(false);
   };
@@ -165,6 +172,7 @@ const CreateNew = () => {
         </Button>
       </div>
       <CustomLoading loading={loading} />
+      <PlayerDialog playVideo={playVideo} videoId={videoId} />
     </div>
   );
 };
