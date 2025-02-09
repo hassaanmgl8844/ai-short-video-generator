@@ -121,8 +121,14 @@ const CreateNew = () => {
 
   useEffect(() => {
   console.log(videoData);
-  
+  if(Object.keys(videoData).length==4){
+    SaveVideoData(videoData);
+  }
   }, [videoData])
+
+  const SaveVideoData=()=>{
+    
+  }
 
   return (
     <div className="md:px-20">
