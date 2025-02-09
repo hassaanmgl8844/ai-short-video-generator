@@ -1,5 +1,5 @@
 import React from "react";
-import { AbsoluteFill, Audio, Img, Sequence, useVideoConfig } from "remotion";
+import { AbsoluteFill, Audio, Img, Sequence, useCurrentFrame, useVideoConfig } from "remotion";
 
 const RemotionVideo = ({
   script,
@@ -9,10 +9,17 @@ const RemotionVideo = ({
   setDurationInFrame,
 }) => {
   const { fps } = useVideoConfig();
+  const frame=useCurrentFrame();
   const getDurationFrames = () => {
     setDurationInFrame((captions[captions?.length - 1]?.end / 1000) * fps);
     return (captions[captions?.length - 1]?.end / 1000) * fps;
   };
+
+  const getCurrentCaptions=()=>{
+    const currentTime=frame/30*1000 //convert Frame Number to Milli Seconds (30fps)
+    const currentCaption=captions.find((word)=>currentTime>=word.start && currentTime<=word.end)
+    return currentCaption?currentCaption?.text:'';
+  }
 
   return (
     <AbsoluteFill className="bg-black">
@@ -45,7 +52,7 @@ const RemotionVideo = ({
                   width: "100%",
                 }}
               >
-                <h2 className="text-2xl">Captions</h2>
+                <h2 className="text-2xl">{getCurrentCaptions()}</h2>
               </AbsoluteFill>
             </AbsoluteFill>
           </Sequence>
