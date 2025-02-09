@@ -1,11 +1,17 @@
 import React from "react";
-import { AbsoluteFill, Img, Sequence, useVideoConfig } from "remotion";
+import { AbsoluteFill, Audio, Img, Sequence, useVideoConfig } from "remotion";
 
-const RemotionVideo = ({ script, imageList, audioFileUrl, captions , setDurationInFrame }) => {
+const RemotionVideo = ({
+  script,
+  imageList,
+  audioFileUrl,
+  captions,
+  setDurationInFrame,
+}) => {
   const { fps } = useVideoConfig();
   const getDurationFrames = () => {
-    setDurationInFrame(captions[captions?.length - 1]?.end / 1000 * fps)
-    return captions[captions?.length - 1]?.end / 1000 * fps;
+    setDurationInFrame((captions[captions?.length - 1]?.end / 1000) * fps);
+    return (captions[captions?.length - 1]?.end / 1000) * fps;
   };
 
   return (
@@ -17,17 +23,35 @@ const RemotionVideo = ({ script, imageList, audioFileUrl, captions , setDuration
             from={(index * getDurationFrames()) / imageList?.length}
             durationInFrames={getDurationFrames}
           >
-            <Img
-              src={item}
-              style={{
-                width: "100%",
-                height: "100%",
-                objectFit: "cover",
-              }}
-            />
+            <AbsoluteFill
+              style={{ justifyContent: "center", alignItems: "center" }}
+            >
+              <Img
+                src={item}
+                style={{
+                  width: "100%",
+                  height: "100%",
+                  objectFit: "cover",
+                }}
+              />
+              <AbsoluteFill
+                style={{
+                  color: "white",
+                  justifyContent: "center",
+                  top: undefined,
+                  bottom: 50,
+                  height: 150,
+                  textAlign: "center",
+                  width: "100%",
+                }}
+              >
+                <h2 className="text-2xl">Captions</h2>
+              </AbsoluteFill>
+            </AbsoluteFill>
           </Sequence>
         </>
       ))}
+      <Audio src={audioFileUrl} />
     </AbsoluteFill>
   );
 };

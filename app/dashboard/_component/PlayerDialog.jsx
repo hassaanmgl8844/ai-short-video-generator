@@ -50,7 +50,7 @@ const PlayerDialog = ({ playVideo, videoId }) => {
               }}
               
             />
-            <div className="flex gap-10">
+            <div className="flex gap-10 mt-10">
               <Button variant="ghost">Cancel</Button>
               <Button>Export</Button>
             </div>
