@@ -21,7 +21,7 @@ const CreateNew = () => {
   // const [playVideo, setPlayVideo] = useState(false);
   const [playVideo, setPlayVideo] = useState(true);
   // const [videoId, setVideoId] = useState();
-  const [videoId, setVideoId] = useState(1);
+  const [videoId, setVideoId] = useState(3);
   const { videoData, setVideoData } = useContext(VideoDataContext);
   const { user } = useUser();
   const onHandleInputChange = (fieldName, fieldValue) => {
