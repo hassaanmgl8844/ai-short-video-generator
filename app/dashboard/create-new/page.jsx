@@ -11,6 +11,7 @@ import { VideoDataContext } from "@/app/_context/VideoDataContext";
 import { useUser } from "@clerk/nextjs";
 import PlayerDialog from "../_component/PlayerDialog";
 
+
 const CreateNew = () => {
   const [formData, setFormData] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -18,10 +19,9 @@ const CreateNew = () => {
   const [audioFileUrl, setAudioFileUrl] = useState();
   const [captions, setCaptions] = useState();
   const [imageList, setImageList] = useState();
-  // const [playVideo, setPlayVideo] = useState(false);
-  const [playVideo, setPlayVideo] = useState(true);
-  // const [videoId, setVideoId] = useState();
-  const [videoId, setVideoId] = useState(3);
+  const [playVideo, setPlayVideo] = useState(false);
+  const [videoId, setVideoId] = useState();
+  
   const { videoData, setVideoData } = useContext(VideoDataContext);
   const { user } = useUser();
   const onHandleInputChange = (fieldName, fieldValue) => {

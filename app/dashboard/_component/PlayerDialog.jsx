@@ -8,14 +8,16 @@ import {
 } from "@/components/ui/dialog";
 import { Player } from "@remotion/player";
 import RemotionVideo from "./RemotionVideo";
+import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 
 const PlayerDialog = ({ playVideo, videoId }) => {
   const [openDialog, setOpenDialog] = useState(false);
   const [videoData, setVideoData] = useState();
-  const [durationInFrame,setDurationInFrame] = useState(100);
+  const router = useRouter();
+  const [durationInFrame, setDurationInFrame] = useState(100);
   useEffect(() => {
-    setOpenDialog(playVideo);
+    setOpenDialog(!openDialog);
     videoId && GetVideoData();
   }, [playVideo]);
 
@@ -46,12 +48,20 @@ const PlayerDialog = ({ playVideo, videoId }) => {
               controls={true}
               inputProps={{
                 ...videoData,
-                setDurationInFrame:(frameValue)=>setDurationInFrame(frameValue)
+                setDurationInFrame: (frameValue) =>
+                  setDurationInFrame(frameValue),
               }}
-              
             />
             <div className="flex gap-10 mt-10">
-              <Button variant="ghost">Cancel</Button>
+              <Button
+                variant="ghost"
+                onClick={() => {
+                  router.replace("/dashboard");
+                  setOpenDialog(false);
+                }}
+              >
+                Cancel
+              </Button>
               <Button>Export</Button>
             </div>
           </DialogDescription>
